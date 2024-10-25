@@ -125,8 +125,8 @@ def add_family_type(df):
     """
     Categorize 'Family Size' into 'Family Type' and add it as a new column.
 
-    Parameters:
-        df (pd.DataFrame): DataFrame containing the 'Family Size' column.
+    Parameters: 
+        df (pd.DataFrame): DataFrame  containing the 'Family Size' column.
 
     Returns:
         pd.DataFrame: DataFrame with an added 'Family Type' column.
@@ -134,4 +134,28 @@ def add_family_type(df):
     df.loc[df["Family Size"] == 1, "Family Type"] = "Single"
     df.loc[(df["Family Size"] > 1) & (df["Family Size"] < 5), "Family Type"] = "Small"
     df.loc[df["Family Size"] >= 5, "Family Type"] = "Large"
+    return df
+
+def unify_titles(df):
+    """
+    Unify the titles in the 'Titles' column by replacing variations of common titles 
+    and consolidating rare titles.
+
+    Parameters:
+        df (pd.DataFrame): DataFrame containing the 'Titles' column.
+
+    Returns:
+        pd.DataFrame: DataFrame with unified 'Titles' values.
+    """
+    # Unify 'Miss'
+    df['Titles'] = df['Titles'].replace(['Mlle.', 'Ms.'], 'Miss.')
+    
+    # Unify 'Mrs'
+    df['Titles'] = df['Titles'].replace('Mme.', 'Mrs.')
+    
+    # Unify rare titles
+    df['Titles'] = df['Titles'].replace(
+        ['Lady.', 'the Countess.', 'Capt.', 'Col.', 'Don.', 'Dr.', 
+         'Major.', 'Rev.', 'Sir.', 'Jonkheer.', 'Dona.'], 'Rare')
+    
     return df
