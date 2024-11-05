@@ -63,20 +63,3 @@ def unique(df):
     tt['Uniques'] = uniques
     df_unique=np.transpose(tt)
     return df_unique
-
-
-
-def miss_unique(df):
-    """
-    For each column in a df, calculate the total number of missing values and the number of unique values
-    """
-    total = df.count()
-    tt = pd.DataFrame(total)
-    tt.columns = ['Total']
-    uniques = []
-    for col in df.columns:
-        unique = df[col].nunique()
-        uniques.append(unique)
-    tt['Uniques'] = uniques
-    df_missunique= np.transpose(tt)
-    return df_missunique
