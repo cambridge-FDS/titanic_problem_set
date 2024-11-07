@@ -1,29 +1,37 @@
+from sklearn.model_selection import train_test_split
+from sklearn import metrics
+from sklearn.metrics import roc_auc_score
 from sklearn.ensemble import RandomForestClassifier
 
 
-# Turn the following into a function
-def get_train_valid(train, valid, predictors, target):
-    train_X = train[predictors]
-    train_Y = train[target].values
-    valid_X = valid[predictors]
-    valid_Y = valid[target].values
+
+def tt_split_valid(df, VALID_SIZE):
+    """
+    Splits the df into two separate dfs, train and valid, creating a training set and a validation set for model training and evaluation.
+    """
+    train, valid = train_test_split(df, test_size=VALID_SIZE, random_state=42, shuffle=True)
+    return train, valid
+
+predictors = ["Sex", "Pclass"]
+target = 'Survived'
+
+def sep_trainvalid(df1,df2):
+    """
+    Separates the training and validation data into features (predictors) and target (the label or outcome to predict)
+    """
+    train_X = df1[predictors]
+    train_Y = df1[target].values
+    valid_X = df2[predictors]
+    valid_Y = df2[target].values
     return train_X, train_Y, valid_X, valid_Y
 
-
-def get_rf_model(
-    train_X, train_Y, valid_X, n_jobs, random_state, criterion, n_estimators
-):
-    clf = RandomForestClassifier(
-        n_jobs=n_jobs,
-        random_state=random_state,
-        criterion=criterion,
-        n_estimators=n_estimators,
-        verbose=False,
-    )
-
-    clf.fit(train_X, train_Y)
-
-    preds_tr = clf.predict(train_X)
-
-    preds = clf.predict(valid_X)
-    return clf, preds_tr, preds
+def asd(df1,df2):
+    """
+    Initialises the classifier and trains the model using the train data
+    """
+    clf = RandomForestClassifier(n_jobs=-1, 
+                                random_state=42,
+                                criterion="gini",
+                                n_estimators=100,
+                                verbose=False)
+    clf.fit(df1, df2)
