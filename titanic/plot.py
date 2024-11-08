@@ -6,7 +6,7 @@ import seaborn as sns
 COLOR_LIST = ["#A5D7E8", "#576CBC", "#19376D", "#0b2447"]
 
 
-def plot_count_pairs(data_df, feature, title, hue="set"):
+def plot_cpairs(data_df, feature, title, hue="set"):
     f, ax = plt.subplots(1, 1, figsize=(8, 4))
     sns.countplot(x=feature, data=data_df, hue=hue, palette=COLOR_LIST)
     plt.grid(color="black", linestyle="-.", linewidth=0.5, axis="y", which="major")
@@ -14,7 +14,7 @@ def plot_count_pairs(data_df, feature, title, hue="set"):
     plt.show()
 
 
-def plot_distribution_pairs(data_df, feature, title, hue="set"):
+def plot_dpairs(data_df, feature, title, hue="set"):
     f, ax = plt.subplots(1, 1, figsize=(8, 4))
     for i, h in enumerate(data_df[hue].unique()):
         g = sns.histplot(

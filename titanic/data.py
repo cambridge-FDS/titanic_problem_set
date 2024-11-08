@@ -95,6 +95,13 @@ def concat(df1,df2):
     all_df.loc[all_df.Survived.isna(), "set"] = "test"
     return all_df
 
+def no_duplicate(df):
+    print(df.columns.duplicated())
+    print(df.index.duplicated())
+    df = df.loc[:, ~df.columns.duplicated()]
+    df = df.reset_index(drop=True)
+    return df
+
 def fam_size(df):
     """
     Used for train and all dfs. Adds a new column called family size which is the
@@ -126,7 +133,7 @@ def fare_int(df):
     df.loc[ df['Fare'] > 31, 'Fare Interval'] = 3
     return df
 
-def sex_class():
+def sex_class(df):
     """
     Combines information from both the "Sex" and "Pclass" columns in a specific format
     """
@@ -155,26 +162,6 @@ def parse_names(row):
             return pd.Series([family_name, title, given_name, None])
     except Exception as ex:
         print(f"Exception: {ex}")
-
-def concat(df1,df2):
-    """
-    Concate two dataframes and add a column 'set' to identify the train and test set.
-    """
-    all_df = pd.concat([df1, df2], axis=0)
-    all_df["set"] = "train"
-    all_df.loc[all_df.Survived.isna(), "set"] = "test"
-    return all_df
-
-def cat_famsize(df1,df2):
-    """
-    Categorises each row in df1 and df2 into family types based on the value of "Family Size". 
-    The new "Family Type" column assigns labels like "Single", "Small", and "Large" depending on the family size.
-    """
-    for dataset in [df1, df2]:
-        dataset.loc[dataset["Family Size"] == 1, "Family Type"] = "Single"
-        dataset.loc[(dataset["Family Size"] > 1) & (dataset["Family Size"] < 5), "Family Type"] = "Small"
-        dataset.loc[(dataset["Family Size"] >= 5), "Family Type"] = "Large"
-    return dataset
 
 def titles(df1,df2):
     """
